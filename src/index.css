@@ -17,3 +17,25 @@ code {
   color:rgb(42, 60, 42);
   text-shadow: 0.8px 0.6px rgb(13, 89, 21);
 }
+
+@media screen and (max-width: 480px) {
+  .media-responsive {
+    flex-direction: column;
+  }
+
+  .inputbox-responsive > div{
+    gap: 0;
+  }
+
+  .inputbox-responsive  div input, .res{
+    transform: scale(0.75);
+  }
+
+  .inputbox-responsive  div input::placeholder{
+    font-size: 13px;
+  }
+
+  .school-selector-responsiveness{
+    font-size: 12px;
+  }
+}

@@ -4,14 +4,14 @@ const getAyah = async(number)=>{
     return await (fetch(URL).then((res)=> res.json()));
 }
 
-const getAyahData =async(number,call)=>{
-    const ayahURL = "https:/api.alquran.cloud/v1/ayah/" + number +'/' + call;
-    return await (fetch(ayahURL).then((res) =>res.json()));
+const getAyahTranslation = async(surahNumber , ayahNo, language)=>{
+    const translationURl = "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/" + language + "/" + surahNumber + "/" + ayahNo + ".json";
+    return await (fetch(translationURl).then((res)=> res.json())); 
 }
 
 const getAyahDetails=(data)=>{
     const {data:{text,
-                surah:{name},
+                surah:{name , number:surahNumber},
                 numberInSurah,
                 juz,
                 ruku, 
@@ -24,29 +24,24 @@ const ayahNo = numberInSurah;
 // console.log({text,ayahNo,surahName,juz,ruku});
 
 
-return {text,surahName,ayahNo,juz,ruku,number};
+return {text,surahName,ayahNo,juz,ruku,number,surahNumber};
 }
 
-const getAyahTranslation=(data)=>{
-    const { data:{text} } = data;
-    const ayahTranslation = text;
-    // console.log(ayahTranslation)
-    return ayahTranslation;
+const formatAyahTranslation=(data)=>{
+    let {text : formattedAyahTranslation} = data;
+
+    return formattedAyahTranslation;
 }
 
-const getAyahAudio =async (data) =>{
-    const {data:{audio}} = await data;
-    const ayahAudio = audio;
-    // console.log(ayahAudio)
-    return ayahAudio;
-}
 
-const getAllAyahDetails =async(number)=>{
+const getAllAyahDetails =async(number,language)=>{
     const ayahDetails = await (getAyah(number).then(getAyahDetails));
-    const ayahTranslation = await (getAyahData(number,'en.asad').then(getAyahTranslation));
-    const ayahAudio = await (getAyahData(number,'ar.alafasy').then(getAyahAudio));
+    let { surahNumber , ayahNo } = ayahDetails;
+    const ayahTranslation = await (getAyahTranslation(surahNumber,ayahNo,language).then(formatAyahTranslation));
+    const audioURL = "https://cdn.islamic.network/quran/audio/128/ar.alafasy/" + number + ".mp3"
+
     
-    return {...ayahDetails,ayahTranslation,ayahAudio};
+    return {...ayahDetails, audioURL,ayahTranslation};
 };
 
 export default getAllAyahDetails

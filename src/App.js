@@ -13,11 +13,13 @@ function App() {
   const d = new Date();
   const [salah,setSalah] = useState(null);
   const [school,setSchool] = useState('1');
-  const [city,setCity] = useState('lucknow');
+  const [city,setCity] = useState('lucknow,IN');
   const [date,setDate] = useState(d.getTime());
 
   const [ayah,setAyah] = useState(null);
-  const [num,setNum] = useState(d.getDate()*d.getMonth()*3);
+  const [num,setNum] = useState(d.getDate()*3 + d.getMonth()*3);
+  const [language,setLanguage] = useState('eng-drlalehbakhtiar');
+
 
   useEffect(()=> {
     const salahData = async() =>{
@@ -29,19 +31,19 @@ function App() {
 
   useEffect(()=>{
     const ayahDetail = async() =>{
-        const allAboutAyah = await getAllAyahDetails(num);
+        const allAboutAyah = await getAllAyahDetails(num,language);
         setAyah(allAboutAyah);
     }
     ayahDetail();
-  },[num]);
+  },[num, language]);
   return (
-    <div className='h-fit max-w-screen-lg mx-auto flex flex-col text-green-pre px-10 shadow-lg shadow-gray-500 bg-gradient-to-br from-green-900 to-gray-300 '>
+    <div className='h-fit max-w-screen-lg mx-auto flex flex-col text-green-pre px-10 shadow-lg shadow-gray-500 bg-gradient-to-br from-green-900 to-gray-300 ' >
           <Header/>
           <Inputs school={school} setSchool={setSchool} city={city} setCity={setCity}/>
           {salah && 
             <>
               <SalahTime date={date} setDate={setDate} salah={salah} city={city}/>
-              {ayah && <Ayah ayah={ayah} setNum={setNum} num={num}/>}
+              {ayah && <Ayah ayah={ayah} setNum={setNum} setLanguage={setLanguage} language={language}/>}
               <Holiday salah={salah}/>
             </>
           }

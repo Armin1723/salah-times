@@ -1,13 +1,24 @@
 import React from 'react'
 import { UilRedo, UilPlay } from '@iconscout/react-unicons'
 
-function Ayah({ayah:{juz,ruku,surahName,ayahTranslation, ayahAudio, text, ayahNo, number},setNum}) {
+function Ayah({ayah:{juz,ruku,surahName,ayahTranslation, audioURL, text, ayahNo, number}, setNum , setLanguage , language }) {
   const nextClick=()=>{
       setNum(number + Math.floor(Math.random()*1000));
+      if(isPlaying)
+      {
+        audio.pause();
+        isPlaying = false;
+      }
+  }
+
+  const handleLanguageChange=(e)=>{
+    const selectedLanguage = e.currentTarget.name;
+    if(selectedLanguage !== language)
+      setLanguage(selectedLanguage);
   }
 
   let isPlaying= false;
-  let audio = new Audio(ayahAudio);
+  let audio = new Audio(audioURL);
   const playAudio=()=>{
     isPlaying ? audio.pause() : audio.play();
   }
@@ -34,7 +45,12 @@ function Ayah({ayah:{juz,ruku,surahName,ayahTranslation, ayahAudio, text, ayahNo
                     <UilPlay size={25} />
             </button>
         </div>
-        <div className='font-2xl px-5 font-bold'>{ayahTranslation}</div>
+        <div className='flex flex-row items-center justify-around text-xl space-x-4 width-1/3'>
+          <button name="eng-drlalehbakhtiar" className='transition ease-out hover:scale-110 hover:font-bold' onClick={handleLanguageChange}>English</button>
+          <p>|</p>
+          <button name="urd-muhammadjunagar" className='transition ease-out hover:scale-110 hover:font-bold' onClick={handleLanguageChange}>Urdu</button>
+        </div>
+        <div className='text-xl px-5'>{ayahTranslation}</div>
       
     </div>
   )
