@@ -7,7 +7,7 @@ const formattedDate=(date)=>{
 
 
 const getSalahData = async (date, city, school)=>{
-    const salahURL = 'https://api.aladhan.com/v1/timingsByAddress/' + formattedDate(date) + '?address=' + city + '&school=' + school;
+    const salahURL = 'https://api.aladhan.com/v1/timingsByAddress/' + formattedDate(date) + '?address=' + city + '&school=' + school + '&method=3&tune=0,0,0,0,0,3,0,0,0';
     return await fetch(salahURL).then((res) => res.json());
 };
 
